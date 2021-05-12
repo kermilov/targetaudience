@@ -1,0 +1,13 @@
+spring:
+    neo4j:
+        uri: bolt://localhost:7687
+        authentication:
+            username: neo4j
+            password: 123456
+    kafka:
+        bootstrap-servers: localhost:9092
+    cloud:
+        stream:
+            bindings:
+                targetAudienceTopicPublish:
+                    destination: ${TARGET_AUDIENCE_TOPIC_PUBLISH:targetAudienceTopicPublish}
