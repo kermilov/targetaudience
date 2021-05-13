@@ -14,10 +14,14 @@ import ru.kermilov.targetaudience.repository.TargetAudienceRepository;
 public class MessageListener {
 
     private final TargetAudienceRepository targetAudienceRepository;
+    private final TargetAudienceTransform targetAudienceTransform;
 
     @StreamListener(Constants.TARGET_AUDIENCE_TOPIC_PUBLISH)
     public void targetAudienceTopicPublish(TargetAudience targetAudience) {
-        targetAudienceRepository.save(TargetAudienceTransform.transform(targetAudience));
+        if (targetAudience.getFriends() != null) {
+            targetAudience.getFriends().forEach(this::targetAudienceTopicPublish);
+        }
+        targetAudienceRepository.save(targetAudienceTransform.transform(targetAudience));
     }
 
 }
